@@ -1,9 +1,3 @@
-/* TicketStatus.java
-   Domain class for ticket status using Builder Pattern
-   Author: Joshua A (230317693)
-   Date: 20 March 2026
-*/
-
 package za.ac.cput.domain;
 
 import za.ac.cput.domain.enums.StatusType;
@@ -11,14 +5,11 @@ import za.ac.cput.domain.enums.StatusType;
 import java.time.LocalDateTime;
 
 public class TicketStatus {
-
-    //Attributes
     private int statusId;
     private StatusType statusType;
     private LocalDateTime statusDate;
     private PatientTicket ticket;
 
-    //Getters
     public int getStatusId(){
         return statusId;
     }
@@ -29,19 +20,6 @@ public class TicketStatus {
 
     public LocalDateTime getStatusDate(){
         return statusDate;
-    }
-
-    public PatientTicket getTicket(){
-        return ticket;
-    }
-
-    //Methods
-    public boolean isEscalated(){
-        return this.statusType == StatusType.ESCALATED;
-    }
-
-    public boolean isClosed(){
-        return this.statusType == StatusType.CLOSED;
     }
 
     @Override
@@ -82,7 +60,7 @@ public class TicketStatus {
             return this;
         }
 
-        public Builder setTicket(PatientTicket ticket){
+        public Builder setPatient(PatientTicket ticket){
             this.ticket = ticket;
             return this;
         }
