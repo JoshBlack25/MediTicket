@@ -1,15 +1,20 @@
 package za.ac.cput.domain;
 
+import za.ac.cput.domain.enums.StatusType;
+
 import java.time.LocalDateTime;
 
 public class PatientTicket {
 
+    //Attributes
     private int ticketId;
     private String ticketDescription;
     private LocalDateTime ticketCreatedDate;
+    private StatusType currentStatus;
     private Patient patient;
     private Appointment appointment;
 
+    //Getters
     public int getTicketId(){
         return ticketId;
     }
@@ -20,6 +25,24 @@ public class PatientTicket {
 
     public LocalDateTime getTicketCreatedDate(){
         return ticketCreatedDate;
+    }
+
+    public StatusType getCurrentStatus(){
+        return currentStatus;
+    }
+
+    //Methods
+    public void openTicket(){
+        this.ticketCreatedDate = LocalDateTime.now();
+        this.currentStatus = StatusType.OPEN;
+    }
+
+    public void closeTicket(){
+        this.currentStatus = StatusType.CLOSED;
+    }
+
+    public void assignAppointment(Appointment appointment){
+        this.appointment = appointment;
     }
 
     @Override
@@ -33,6 +56,7 @@ public class PatientTicket {
                 '}';
     }
 
+    //Constructor
     private PatientTicket(Builder builder){
         this.ticketId = builder.ticketId;
         this.ticketDescription = builder.ticketDescription;
@@ -41,6 +65,7 @@ public class PatientTicket {
         this.appointment = builder.appointment;
     }
 
+    //Builder Class
     public static class Builder{
         private int ticketId;
         private String ticketDescription;

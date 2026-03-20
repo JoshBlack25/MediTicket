@@ -5,11 +5,14 @@ import za.ac.cput.domain.enums.StatusType;
 import java.time.LocalDateTime;
 
 public class TicketStatus {
+
+    //Attributes
     private int statusId;
     private StatusType statusType;
     private LocalDateTime statusDate;
     private PatientTicket ticket;
 
+    //Getters
     public int getStatusId(){
         return statusId;
     }
@@ -20,6 +23,15 @@ public class TicketStatus {
 
     public LocalDateTime getStatusDate(){
         return statusDate;
+    }
+
+    //Methods
+    public boolean isEscalated(){
+        return this.statusType == StatusType.ESCALATED;
+    }
+
+    public boolean isClosed(){
+        return this.statusType == StatusType.CLOSED;
     }
 
     @Override
