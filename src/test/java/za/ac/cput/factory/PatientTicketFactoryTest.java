@@ -1,9 +1,3 @@
-/* PatientTicketFactoryTest.java
-   TDD test class for PatientTicketFactory
-   Author: Joshua A (230317693)
-   Date: 21 March 2026
-*/
-
 package za.ac.cput.factory;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,8 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import za.ac.cput.domain.Patient;
 import za.ac.cput.domain.PatientTicket;
-import za.ac.cput.domain.Appointment;
-
+import za.ac.cput.domain.enums.StatusType;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -23,8 +16,7 @@ public class PatientTicketFactoryTest {
     @BeforeEach
     void setUp(){
         Patient patient = new Patient();
-        Appointment appointment = new Appointment(); // Add this line
-        ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", patient, appointment);
+        ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", patient);
     }
 
     @Test
@@ -47,4 +39,17 @@ public class PatientTicketFactoryTest {
         assertNull(ticket.getCurrentStatus());
     }
 
+    @Test
+    void TestOpenTicket(){
+        ticket.openTicket();
+        assertEquals(StatusType.OPEN, ticket.getCurrentStatus());
+        assertNotNull(ticket.getTicketCreatedDate());
+    }
+
+    @Test
+    void testCloseTicket(){
+        ticket.openTicket();
+        ticket.closeTicket();
+        assertEquals(StatusType.CLOSED, ticket.getCurrentStatus());
+    }
 }
