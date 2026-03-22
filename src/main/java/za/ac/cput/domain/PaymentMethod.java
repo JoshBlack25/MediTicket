@@ -1,0 +1,13 @@
+/* PaymentMethod.java
+   Payment method enumeration
+   Author: Abdullahi (your student number)
+   Date: 22 March 2026
+*/
+package za.ac.cput.domain;
+
+public enum PaymentMethod {
+    CASH,
+    CARD,
+    EFT,
+    MEDICAL_AID
+}
