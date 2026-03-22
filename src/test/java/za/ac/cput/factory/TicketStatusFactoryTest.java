@@ -1,3 +1,9 @@
+/* TicketStatusFactoryTest.java
+   TDD test class for TicketStatusFactory
+   Author: Joshua A (230317693)
+   Date: 21 March 2026
+*/
+
 package za.ac.cput.factory;
 
 import org.junit.jupiter.api.BeforeEach;

@@ -1,3 +1,9 @@
+/* TicketStatus.java
+   Domain class for ticket status using Builder Pattern
+   Author: Joshua A (230317693)
+   Date: 20 March 2026
+*/
+
 package za.ac.cput.domain;
 
 import za.ac.cput.domain.enums.StatusType;
