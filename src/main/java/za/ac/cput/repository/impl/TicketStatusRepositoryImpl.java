@@ -48,8 +48,8 @@ public class TicketStatusRepositoryImpl implements ITicketStatusRepository {
     }
 
     @Override
-    public void delete(Integer id) {
-        store.remove(id);
+    public boolean delete(Integer id) {
+        return store.remove(id) != null;
     }
 
     @Override

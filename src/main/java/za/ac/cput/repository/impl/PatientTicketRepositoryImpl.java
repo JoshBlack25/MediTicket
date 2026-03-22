@@ -49,8 +49,8 @@ public class PatientTicketRepositoryImpl implements IPatientTicketRepository {
     }
 
     @Override
-    public void delete(Integer id) {
-        store.remove(id);
+    public boolean delete(Integer id) {
+        return store.remove(id) != null;
     }
 
     @Override
