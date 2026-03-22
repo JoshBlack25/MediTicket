@@ -66,7 +66,8 @@ public class TicketStatusRepositoryImplTest {
     @Order(4)
     void testDelete() {
         repository.create(status);
-        repository.delete(1);
+        boolean deleted = repository.delete(1);
+        assertTrue(deleted);
         assertNull(repository.read(1));
     }
 

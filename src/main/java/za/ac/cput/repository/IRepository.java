@@ -13,6 +13,6 @@ public interface IRepository<T, ID> {
     T create (T enitity);
     T read(ID id);
     T update(T entity);
-    void delete(ID id);
+    boolean delete(ID id);
     List<T> getAll();
 }

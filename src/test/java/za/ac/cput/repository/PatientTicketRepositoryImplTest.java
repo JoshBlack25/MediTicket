@@ -66,7 +66,8 @@ public class PatientTicketRepositoryImplTest {
     @Order(4)
     void testDelete() {
         repository.create(ticket);
-        repository.delete(1);
+        boolean deleted = repository.delete(1);
+        assertTrue(deleted);
         assertNull(repository.read(1));
     }
 
