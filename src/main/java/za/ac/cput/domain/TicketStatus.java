@@ -31,6 +31,10 @@ public class TicketStatus {
         return statusDate;
     }
 
+    public PatientTicket getTicket(){
+        return ticket;
+    }
+
     //Methods
     public boolean isEscalated(){
         return this.statusType == StatusType.ESCALATED;

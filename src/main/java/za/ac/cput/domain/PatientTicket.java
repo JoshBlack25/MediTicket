@@ -37,6 +37,14 @@ public class PatientTicket {
         return currentStatus;
     }
 
+    public Patient getPatient(){
+        return patient;
+    }
+
+    public Appointment getAppointment(){
+        return appointment;
+    }
+
     //Methods
     public void openTicket(){
         this.ticketCreatedDate = LocalDateTime.now();
