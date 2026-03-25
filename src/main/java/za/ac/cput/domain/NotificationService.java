@@ -2,7 +2,7 @@ package za.ac.cput.domain;
 import za.ac.cput.domain.enums.NotificationStatus;
 import za.ac.cput.domain.enums.NotificationType;
 import java.time.LocalDateTime;
-
+//Raul Everts 230270565
 public class NotificationService {
     //Attributes
     private int notificationId;

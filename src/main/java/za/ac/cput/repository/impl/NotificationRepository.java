@@ -1,10 +1,11 @@
+// repository/impl/NotificationRepository.java
 package za.ac.cput.repository.impl;
 
 import za.ac.cput.domain.NotificationService;
 import za.ac.cput.repository.INotificationRepository;
 import java.util.ArrayList;
 import java.util.List;
-
+//Raul Everts 230270565
 public class NotificationRepository implements INotificationRepository {
     private List<NotificationService> notifications = new ArrayList<>();
 
@@ -15,9 +16,9 @@ public class NotificationRepository implements INotificationRepository {
     }
 
     @Override
-    public NotificationService read(int notificationId) {
+    public NotificationService read(Integer notificationId) {
         for (NotificationService n : notifications) {
-            if (n.getNotificationId() == notificationId) return n;
+            if (n.getNotificationId() == (int) notificationId) return n;
         }
         return null;
     }
@@ -30,8 +31,8 @@ public class NotificationRepository implements INotificationRepository {
     }
 
     @Override
-    public void delete(int notificationId) {
-        notifications.removeIf(n -> n.getNotificationId() == notificationId);
+    public boolean delete(Integer notificationId) {
+        return notifications.removeIf(n -> n.getNotificationId() == notificationId);
     }
 
     @Override

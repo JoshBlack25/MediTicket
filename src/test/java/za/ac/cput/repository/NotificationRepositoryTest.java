@@ -1,11 +1,12 @@
 package za.ac.cput.repository;
 
+import za.ac.cput.domain.enums.NotificationType;
 import za.ac.cput.domain.NotificationService;
 import za.ac.cput.factory.NotificationFactory;
 import za.ac.cput.repository.impl.NotificationRepository;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
+//Raul Everts 230270565
 public class NotificationRepositoryTest {
 
     private NotificationRepository repository = new NotificationRepository();
@@ -28,10 +29,21 @@ public class NotificationRepositoryTest {
     }
 
     @Test
+    void testUpdate() {
+        NotificationService notification = NotificationFactory.createSMS(6, null, null, null);
+        repository.create(notification);
+        NotificationService updated = NotificationFactory.createEMAIL(6, null, null, null);
+        repository.update(updated);
+        NotificationService found = repository.read(6);
+        assertEquals(NotificationType.EMAIL, found.getNotificationType());
+    }
+
+    @Test
     void testDelete() {
         NotificationService notification = NotificationFactory.createSMS(3, null, null, null);
         repository.create(notification);
-        repository.delete(3);
+        boolean result = repository.delete(3);
+        assertTrue(result);
         assertNull(repository.read(3));
     }
 

@@ -5,7 +5,7 @@ import za.ac.cput.domain.enums.NotificationType;
 import za.ac.cput.domain.enums.NotificationStatus;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
-
+//Raul Everts 230270565
 public class NotificationFactoryTest {
 
     @Test

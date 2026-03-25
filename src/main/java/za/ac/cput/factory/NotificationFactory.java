@@ -7,7 +7,7 @@ import za.ac.cput.domain.Appointment;
 import za.ac.cput.domain.enums.NotificationType;
 import za.ac.cput.domain.enums.NotificationStatus;
 import java.time.LocalDateTime;
-
+//Raul Everts 230270565
 public class NotificationFactory {
 
     public static NotificationService createSMS(int notificationId, Patient patient, PatientTicket ticket, Appointment appointment) {
