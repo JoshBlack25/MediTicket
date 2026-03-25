@@ -11,20 +11,6 @@ public class ClinicStaff {
     private String staffEmail;
     private String staffCell;
 
-    // Main method to test
-    public static void main(String[] args) {
-        ClinicStaff staff = ClinicStaffFactory.createClinicStaff(
-                1,
-                "John",
-                "Doe",
-               "Nurse",
-               "john.doe@example.com",
-               "0821234567"
-                );
-
-        System.out.println(staff);
-    }
-
     // Private constructor
     private ClinicStaff(Builder builder) {
         this.staffId = builder.staffId;

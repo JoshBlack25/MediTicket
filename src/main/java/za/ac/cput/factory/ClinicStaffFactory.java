@@ -12,6 +12,12 @@ public class ClinicStaffFactory {
             String email,
             String cell) {
 
+        if (name == null || name.isEmpty()) return null;
+        if (surname == null || surname.isEmpty()) return null;
+        if (role == null || role.isEmpty()) return null;
+        if (email == null || !email.contains("@")) return null;
+        if (cell == null || cell.length() < 10) return null;
+
         return new ClinicStaff.Builder()
                 .setStaffId(id)
                 .setStaffName(name)

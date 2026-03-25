@@ -29,7 +29,6 @@ public class ClinicStaffRepositoryImpl implements ClinicStaffRepository {
 
     @Override
     public boolean delete(Integer id) {
-        db.remove(id);
-        return true;
+        return db.remove(id) != null;
     }
 }
