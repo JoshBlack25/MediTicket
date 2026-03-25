@@ -1,6 +1,6 @@
 /* Payment.java
    Payment domain entity using Builder Pattern
-   Author: Abdullahi (your student number)
+   Author: Abdullahi (230971091)
    Date: 22 March 2026
 */
 package za.ac.cput.domain;
@@ -13,9 +13,10 @@ public class Payment {
     private LocalDateTime paymentDate;
     private PaymentMethod paymentMethod;
     private PaymentStatus paymentStatus;
-    private int ticketId; // references PatientTicket by ID to avoid tight coupling
+    private PatientTicket ticket;
 
-    private Payment() {}
+    private Payment() {
+    }
 
     private Payment(Builder builder) {
         this.paymentId = builder.paymentId;
@@ -23,16 +24,33 @@ public class Payment {
         this.paymentDate = builder.paymentDate;
         this.paymentMethod = builder.paymentMethod;
         this.paymentStatus = builder.paymentStatus;
-        this.ticketId = builder.ticketId;
+        this.ticket = builder.ticket;
     }
 
     // Getters
-    public int getPaymentId() { return paymentId; }
-    public double getPaymentAmount() { return paymentAmount; }
-    public LocalDateTime getPaymentDate() { return paymentDate; }
-    public PaymentMethod getPaymentMethod() { return paymentMethod; }
-    public PaymentStatus getPaymentStatus() { return paymentStatus; }
-    public int getTicketId() { return ticketId; }
+    public int getPaymentId() {
+        return paymentId;
+    }
+
+    public double getPaymentAmount() {
+        return paymentAmount;
+    }
+
+    public LocalDateTime getPaymentDate() {
+        return paymentDate;
+    }
+
+    public PaymentMethod getPaymentMethod() {
+        return paymentMethod;
+    }
+
+    public PaymentStatus getPaymentStatus() {
+        return paymentStatus;
+    }
+
+    public PatientTicket getTicket() {
+        return ticket;
+    }
 
     @Override
     public String toString() {
@@ -42,7 +60,7 @@ public class Payment {
                 ", paymentDate=" + paymentDate +
                 ", paymentMethod=" + paymentMethod +
                 ", paymentStatus=" + paymentStatus +
-                ", ticketId=" + ticketId +
+                ", ticket=" + ticket +
                 '}';
     }
 
@@ -53,32 +71,38 @@ public class Payment {
         private LocalDateTime paymentDate;
         private PaymentMethod paymentMethod;
         private PaymentStatus paymentStatus;
-        private int ticketId;
+        private PatientTicket ticket;
 
         public Builder setPaymentId(int paymentId) {
             this.paymentId = paymentId;
             return this;
         }
+
         public Builder setPaymentAmount(double paymentAmount) {
             this.paymentAmount = paymentAmount;
             return this;
         }
+
         public Builder setPaymentDate(LocalDateTime paymentDate) {
             this.paymentDate = paymentDate;
             return this;
         }
+
         public Builder setPaymentMethod(PaymentMethod paymentMethod) {
             this.paymentMethod = paymentMethod;
             return this;
         }
+
         public Builder setPaymentStatus(PaymentStatus paymentStatus) {
             this.paymentStatus = paymentStatus;
             return this;
         }
-        public Builder setTicketId(int ticketId) {
-            this.ticketId = ticketId;
+
+        public Builder setTicket(PatientTicket ticket) {
+            this.ticket = ticket;
             return this;
         }
+
         public Payment build() {
             return new Payment(this);
         }
@@ -86,13 +110,19 @@ public class Payment {
 
     // Main method to verify builder functionality
     public static void main(String[] args) {
+        PatientTicket ticket = new PatientTicket.Builder()
+                .setTicketId(101)
+                .setTicketDescription("General checkup")
+                .setTicketCreatedDate(LocalDateTime.now())
+                .build();
+
         Payment payment = new Payment.Builder()
                 .setPaymentId(1)
                 .setPaymentAmount(750.00)
                 .setPaymentDate(LocalDateTime.now())
                 .setPaymentMethod(PaymentMethod.CARD)
                 .setPaymentStatus(PaymentStatus.PAID)
-                .setTicketId(101)
+                .setTicket(ticket)
                 .build();
 
         System.out.println("Payment created: " + payment);

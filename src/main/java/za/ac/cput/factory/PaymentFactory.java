@@ -1,13 +1,14 @@
 /* PaymentFactory.java
    Factory class for creating Payment objects
-   Author: Abdullahi (your student number)
-   Date: 22 March 2026
+   Author: Abdullahi (230971091)
+   Date: 25 March 2026
 */
 package za.ac.cput.factory;
 
 import za.ac.cput.domain.Payment;
 import za.ac.cput.domain.PaymentMethod;
 import za.ac.cput.domain.PaymentStatus;
+import za.ac.cput.domain.PatientTicket;
 
 import java.time.LocalDateTime;
 
@@ -18,8 +19,7 @@ public class PaymentFactory {
                                         LocalDateTime paymentDate,
                                         PaymentMethod paymentMethod,
                                         PaymentStatus paymentStatus,
-                                        int ticketId) {
-        // Validation
+                                        PatientTicket ticket) {
         if (paymentAmount <= 0) return null;
         if (paymentMethod == null) return null;
         if (paymentStatus == null) return null;
@@ -30,7 +30,7 @@ public class PaymentFactory {
                 .setPaymentDate(paymentDate != null ? paymentDate : LocalDateTime.now())
                 .setPaymentMethod(paymentMethod)
                 .setPaymentStatus(paymentStatus)
-                .setTicketId(ticketId)
+                .setTicket(ticket)
                 .build();
     }
 }

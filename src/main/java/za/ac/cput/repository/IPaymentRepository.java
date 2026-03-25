@@ -1,6 +1,6 @@
 /* IPaymentRepository.java
    Repository interface for Payment entity
-   Author: Abdullahi (your student number)
+   Author: Abdullahi (230971091)
    Date: 22 March 2026
 */
 package za.ac.cput.repository;
