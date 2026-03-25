@@ -1,8 +1,6 @@
 package za.ac.cput.repository;
 
 import za.ac.cput.domain.NotificationService;
-import za.ac.cput.domain.enums.NotificationType;
-import za.ac.cput.domain.enums.NotificationStatus;
 import za.ac.cput.factory.NotificationFactory;
 import za.ac.cput.repository.impl.NotificationRepository;
 import org.junit.jupiter.api.Test;
