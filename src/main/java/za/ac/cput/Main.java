@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 public class Main {
 
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
 
         Patient patient = new Patient();
         Appointment appointment = new Appointment();
@@ -71,5 +71,5 @@ public class Main {
         System.out.println(escalatedStatus);
         System.out.println("isEscalated() : " + escalatedStatus.isEscalated());
         System.out.println("isClosed()    : " + escalatedStatus.isClosed());
-    }
+    }*/
 }

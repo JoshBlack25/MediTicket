@@ -1,9 +1,3 @@
-/* TicketStatusRepositoryImplTest.java
-   TDD test class for TicketStatusRepositoryImpl
-   Author: Joshua A (230317693)
-   Date: 22 March 2026
-*/
-
 package za.ac.cput.repository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,6 +5,7 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import za.ac.cput.domain.Appointment;
 import za.ac.cput.domain.Patient;
 import za.ac.cput.domain.PatientTicket;
 import za.ac.cput.domain.TicketStatus;
@@ -18,6 +13,8 @@ import za.ac.cput.domain.enums.StatusType;
 import za.ac.cput.factory.PatientTicketFactory;
 import za.ac.cput.factory.TicketStatusFactory;
 import za.ac.cput.repository.impl.TicketStatusRepositoryImpl;
+
+import java.time.LocalDate;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -31,7 +28,20 @@ public class TicketStatusRepositoryImplTest {
     @BeforeEach
     void setUp() {
         repository = TicketStatusRepositoryImpl.getInstance();
-        ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", new Patient());
+
+        Patient patient = new Patient.Builder()
+                .setPatientId(1)
+                .setPatientName("John")
+                .setPatientSurname("Doe")
+                .setPatientCell("1234567890")
+                .setPatientEmail("john.doe@example.com")
+                .setPatientDOB(LocalDate.of(1990, 1, 1))
+                .build();
+
+        Appointment appointment = new Appointment();
+
+        ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", patient, appointment);
+
         status = TicketStatusFactory.createStatus(1, StatusType.OPEN, ticket);
     }
 

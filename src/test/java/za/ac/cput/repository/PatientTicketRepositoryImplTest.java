@@ -1,9 +1,3 @@
-/* PatientTicketRepositoryImplTest.java
-   TDD test class for PatientTicketRepositoryImpl
-   Author: Joshua A (230317693)
-   Date: 22 March 2026
-*/
-
 package za.ac.cput.repository;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,15 +5,17 @@ import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
+import za.ac.cput.domain.Appointment;
 import za.ac.cput.domain.Patient;
 import za.ac.cput.domain.PatientTicket;
 import za.ac.cput.factory.PatientTicketFactory;
 import za.ac.cput.repository.impl.PatientTicketRepositoryImpl;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-
 public class PatientTicketRepositoryImplTest {
 
     private PatientTicketRepositoryImpl repository;
@@ -28,7 +24,19 @@ public class PatientTicketRepositoryImplTest {
     @BeforeEach
     void setUp() {
         repository = PatientTicketRepositoryImpl.getInstance();
-        ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", new Patient());
+
+        Patient patient = new Patient.Builder()
+                .setPatientId(1)
+                .setPatientName("John")
+                .setPatientSurname("Doe")
+                .setPatientCell("1234567890")
+                .setPatientEmail("john.doe@example.com")
+                .setPatientDOB(LocalDate.of(1990, 1, 1))
+                .build();
+
+        Appointment appointment = new Appointment();
+
+        ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", patient, appointment);
     }
 
     @Test
@@ -52,11 +60,22 @@ public class PatientTicketRepositoryImplTest {
     @Order(3)
     void testUpdate() {
         repository.create(ticket);
+
+        Patient updatedPatient = new Patient.Builder()
+                .setPatientId(2)
+                .setPatientName("Jane")
+                .setPatientSurname("Smith")
+                .setPatientCell("0987654321")
+                .setPatientEmail("jane.smith@example.com")
+                .setPatientDOB(LocalDate.of(1985, 5, 15))
+                .build();
+
         PatientTicket updated = new PatientTicket.Builder()
                 .setTicketId(1)
                 .setTicketDescription("Updated description")
-                .setPatient(new Patient())
+                .setPatient(updatedPatient)
                 .build();
+
         PatientTicket result = repository.update(updated);
         assertNotNull(result);
         assertEquals("Updated description", result.getTicketDescription());
@@ -75,10 +94,21 @@ public class PatientTicketRepositoryImplTest {
     @Order(5)
     void testGetAll() {
         repository.create(ticket);
-        PatientTicket ticket2 = PatientTicketFactory.createTicket(2, "Follow-up appointment request", new Patient());
+
+        Patient patient2 = new Patient.Builder()
+                .setPatientId(2)
+                .setPatientName("Alice")
+                .setPatientSurname("Brown")
+                .setPatientCell("5551234567")
+                .setPatientEmail("alice.brown@example.com")
+                .setPatientDOB(LocalDate.of(1992, 7, 20))
+                .build();
+        Appointment appointment2 = new Appointment();
+
+        PatientTicket ticket2 = PatientTicketFactory.createTicket(2, "Follow-up appointment request", patient2, appointment2);
         repository.create(ticket2);
+
         assertFalse(repository.getAll().isEmpty());
         assertTrue(repository.getAll().size() >= 2);
     }
-
 }
