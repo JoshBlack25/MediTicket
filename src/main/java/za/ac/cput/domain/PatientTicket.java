@@ -1,26 +1,32 @@
-/* PatientTicket.java
-   Domain class for patient ticket using Builder Pattern
-   Author: Joshua A (230317693)
-   Date: 20 March 2026
-*/
-
 package za.ac.cput.domain;
 
 import za.ac.cput.domain.enums.StatusType;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 public class PatientTicket {
 
-    //Attributes
+    // Attributes
     private int ticketId;
     private String ticketDescription;
     private LocalDateTime ticketCreatedDate;
-    private StatusType currentStatus;
     private Patient patient;
     private Appointment appointment;
+    private List<TicketStatus> statusHistory;
 
-    //Getters
+    // Constructor
+    private PatientTicket(Builder builder){
+        this.ticketId = builder.ticketId;
+        this.ticketDescription = builder.ticketDescription;
+        this.ticketCreatedDate = builder.ticketCreatedDate;
+        this.patient = builder.patient;
+        this.appointment = builder.appointment;
+        this.statusHistory = new ArrayList<>(); // initialize history
+    }
+
+    // Getters
     public int getTicketId(){
         return ticketId;
     }
@@ -33,10 +39,6 @@ public class PatientTicket {
         return ticketCreatedDate;
     }
 
-    public StatusType getCurrentStatus(){
-        return currentStatus;
-    }
-
     public Patient getPatient(){
         return patient;
     }
@@ -45,14 +47,27 @@ public class PatientTicket {
         return appointment;
     }
 
-    //Methods
-    public void openTicket(){
-        this.ticketCreatedDate = LocalDateTime.now();
-        this.currentStatus = StatusType.OPEN;
+    public List<TicketStatus> getStatusHistory(){
+        return statusHistory;
     }
 
-    public void closeTicket(){
-        this.currentStatus = StatusType.CLOSED;
+    // Business Logic (THIS is where status is handled correctly)
+    public void addStatus(StatusType statusType){
+        TicketStatus status = new TicketStatus.Builder()
+                .setStatusType(statusType)
+                .setStatusDate(LocalDateTime.now())
+                .setTicket(this)
+                .build();
+
+        this.statusHistory.add(status);
+    }
+
+    // Optional: Get latest status (clean design)
+    public StatusType getCurrentStatus(){
+        if(statusHistory.isEmpty()){
+            return null;
+        }
+        return statusHistory.get(statusHistory.size() - 1).getStatusType();
     }
 
     public void assignAppointment(Appointment appointment){
@@ -70,16 +85,7 @@ public class PatientTicket {
                 '}';
     }
 
-    //Constructor
-    private PatientTicket(Builder builder){
-        this.ticketId = builder.ticketId;
-        this.ticketDescription = builder.ticketDescription;
-        this.ticketCreatedDate = builder.ticketCreatedDate;
-        this.patient = builder.patient;
-        this.appointment = builder.appointment;
-    }
-
-    //Builder Class
+    // Builder Class
     public static class Builder{
         private int ticketId;
         private String ticketDescription;

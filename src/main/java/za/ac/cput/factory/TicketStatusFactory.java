@@ -15,11 +15,15 @@ public class TicketStatusFactory {
 
     public static TicketStatus createStatus(int statusId, StatusType statusType, PatientTicket ticket){
 
+        if (statusId <= 0 || statusType == null || ticket == null) {
+            return null;
+        }
+
         return new TicketStatus.Builder()
                 .setStatusId(statusId)
                 .setStatusType(statusType)
                 .setStatusDate(LocalDateTime.now())
-                .setPatient(ticket)
+                .setTicket(ticket)
                 .build();
     }
 
