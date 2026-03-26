@@ -8,7 +8,7 @@ import java.time.LocalDate;
 public class PatientFactory {
 
     public static Patient createPatient(int patientId, String patientName, String patientSurname,String patientCell, String patientEmail, LocalDate patientDOB){
-        if(Helper.isValidId(patientId) || Helper.isNullOrEmpty(patientName) || Helper.isNullOrEmpty(patientSurname) || Helper.isNullOrEmpty(patientCell) || Helper.isValidEmail(patientEmail) || Helper.isValidDate(patientDOB)){
+        if(!Helper.isValidId(patientId) || Helper.isNullOrEmpty(patientName) || Helper.isNullOrEmpty(patientSurname) || Helper.isNullOrEmpty(patientCell) || !Helper.isValidEmail(patientEmail) || !Helper.isValidDate(patientDOB)){
             return null;
         }
         return new Patient.Builder()
