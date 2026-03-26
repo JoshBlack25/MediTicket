@@ -82,7 +82,7 @@ public class TicketStatus {
             return this;
         }
 
-        public Builder setPatient(PatientTicket ticket){
+        public Builder setTicket(PatientTicket ticket){
             this.ticket = ticket;
             return this;
         }
