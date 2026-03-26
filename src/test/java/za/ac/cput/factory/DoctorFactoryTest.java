@@ -1,8 +1,3 @@
-/* DoctorFactoryTest.java
-   TDD test class for DoctorFactory
-   Author: Jaden A (222206721)
-   Date: 25 March 2026
-*/
 package za.ac.cput.factory;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -11,58 +6,133 @@ import za.ac.cput.domain.Doctor;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class DoctorFactoryTest {
+class DoctorFactoryTest {
 
     private Doctor doctor;
 
     @BeforeEach
     void setUp() {
-        doctor = DoctorFactory.createDoctor(1001, "John", "Doe", "Cardiology", "0123456789", "john.doe@example.com");
+        doctor = DoctorFactory.buildDoctor(
+                1,
+                "James",
+                "Smith",
+                "Cardiologist",
+                "0821234567",
+                "james.smith@clinic.com"
+        );
     }
 
+    // Success tests
     @Test
-    void testCreateDoctor() {
+    void testDoctorIsNotNull() {
         assertNotNull(doctor);
     }
 
     @Test
     void testDoctorId() {
-        assertEquals(1001, doctor.getDoctorId());
+        assertEquals(1, doctor.getDoctorId());
     }
 
     @Test
     void testDoctorName() {
-        assertEquals("John", doctor.getDoctorName());
+        assertEquals("James", doctor.getDoctorName());
     }
 
     @Test
     void testDoctorSurname() {
-        assertEquals("Doe", doctor.getDoctorSurname());
+        assertEquals("Smith", doctor.getDoctorSurname());
     }
 
     @Test
     void testDoctorSpecialty() {
-        assertEquals("Cardiology", doctor.getDoctorSpecialty());
+        assertEquals("Cardiologist", doctor.getDoctorSpecialty());
     }
 
     @Test
     void testDoctorCell() {
-        assertEquals("0123456789", doctor.getDoctorCell());
+        assertEquals("0821234567", doctor.getDoctorCell());
     }
 
     @Test
     void testDoctorEmail() {
-        assertEquals("john.doe@example.com", doctor.getDoctorEmail());
+        assertEquals("james.smith@clinic.com", doctor.getDoctorEmail());
     }
 
     @Test
-    void testToStringContainsAllAttributes() {
-        String toString = doctor.toString();
-        assertTrue(toString.contains("1001"));
-        assertTrue(toString.contains("John"));
-        assertTrue(toString.contains("Doe"));
-        assertTrue(toString.contains("Cardiology"));
-        assertTrue(toString.contains("0123456789"));
-        assertTrue(toString.contains("john.doe@example.com"));
+    void testGetFullName() {
+        assertEquals("Dr. James Smith", doctor.getFullName());
+    }
+
+    @Test
+    void testUpdateContactDetails() {
+        doctor.updateContactDetails("0839876543", "james.new@clinic.com");
+        assertEquals("0839876543", doctor.getDoctorCell());
+        assertEquals("james.new@clinic.com", doctor.getDoctorEmail());
+    }
+
+    @Test
+    void testCopyBuilder() {
+        Doctor copiedDoctor = new Doctor.Builder()
+                .copy(doctor)
+                .build();
+        assertNotNull(copiedDoctor);
+        assertEquals(doctor.getDoctorId(), copiedDoctor.getDoctorId());
+        assertEquals(doctor.getDoctorName(), copiedDoctor.getDoctorName());
+        assertEquals(doctor.getDoctorSurname(), copiedDoctor.getDoctorSurname());
+        assertEquals(doctor.getDoctorSpecialty(), copiedDoctor.getDoctorSpecialty());
+        assertEquals(doctor.getDoctorCell(), copiedDoctor.getDoctorCell());
+        assertEquals(doctor.getDoctorEmail(), copiedDoctor.getDoctorEmail());
+    }
+
+    @Test
+    void testToString() {
+        String result = doctor.toString();
+        assertNotNull(result);
+        assertTrue(result.contains("James"));
+        assertTrue(result.contains("Smith"));
+        assertTrue(result.contains("Cardiologist"));
+    }
+
+    // Validation failure tests
+    @Test
+    void testInvalidId() {
+        Doctor invalid = DoctorFactory.buildDoctor(
+                0, "James", "Smith", "Cardiologist", "0821234567", "james.smith@clinic.com");
+        assertNull(invalid);
+    }
+
+    @Test
+    void testInvalidName() {
+        Doctor invalid = DoctorFactory.buildDoctor(
+                1, "", "Smith", "Cardiologist", "0821234567", "james.smith@clinic.com");
+        assertNull(invalid);
+    }
+
+    @Test
+    void testInvalidSurname() {
+        Doctor invalid = DoctorFactory.buildDoctor(
+                1, "James", "", "Cardiologist", "0821234567", "james.smith@clinic.com");
+        assertNull(invalid);
+    }
+
+    @Test
+    void testInvalidSpecialty() {
+        Doctor invalid = DoctorFactory.buildDoctor(
+                1, "James", "Smith", "", "0821234567", "james.smith@clinic.com");
+        assertNull(invalid);
+    }
+
+    @Test
+    void testInvalidEmail() {
+        Doctor invalid = DoctorFactory.buildDoctor(
+                1, "James", "Smith", "Cardiologist", "0821234567", "invalidemail");
+        assertNull(invalid);
+    }
+
+    @Test
+    void testInvalidCell() {
+        Doctor invalid = DoctorFactory.buildDoctor(
+                1, "James", "Smith", "Cardiologist", "082", "james.smith@clinic.com");
+        assertNull(invalid);
     }
 }
