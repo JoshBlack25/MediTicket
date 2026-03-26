@@ -15,6 +15,8 @@ import za.ac.cput.domain.PatientTicket;
 import za.ac.cput.domain.TicketStatus;
 import za.ac.cput.domain.enums.StatusType;
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -26,12 +28,24 @@ public class TicketStatusFactoryTest {
 
     @BeforeEach
     void setUp() {
-        PatientTicket ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", new Patient(), new Appointment());
+        Patient patient = new Patient.Builder()
+                .setPatientId(1)
+                .setPatientName("John")
+                .setPatientSurname("Doe")
+                .setPatientCell("1234567890")
+                .setPatientEmail("john.doe@example.com")
+                .setPatientDOB(LocalDate.of(1990, 1, 1))
+                .build();
+
+        Appointment appointment = new Appointment();
+
+        PatientTicket ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", patient, appointment);
 
         openStatus      = TicketStatusFactory.createStatus(1, StatusType.OPEN, ticket);
         closedStatus    = TicketStatusFactory.createStatus(2, StatusType.CLOSED, ticket);
         escalatedStatus = TicketStatusFactory.createStatus(3, StatusType.ESCALATED, ticket);
     }
+
 
     @Test
     void testCreateStatus(){

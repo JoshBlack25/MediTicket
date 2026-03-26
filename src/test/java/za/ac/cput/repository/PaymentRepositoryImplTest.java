@@ -1,0 +1,95 @@
+/* PaymentRepositoryTest.java
+   TDD test class for PaymentRepositoryImpl
+   Author: Abdullahi (230971091)
+   Date: 25 March 2026
+*/
+package za.ac.cput.repository;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import za.ac.cput.domain.Payment;
+import za.ac.cput.domain.enums.PaymentMethod;
+import za.ac.cput.domain.enums.PaymentStatus;
+import za.ac.cput.domain.PatientTicket;
+import za.ac.cput.factory.PaymentFactory;
+import za.ac.cput.repository.impl.PaymentRepositoryImpl;
+
+import java.time.LocalDateTime;
+
+import static org.junit.jupiter.api.Assertions.*;
+
+public class PaymentRepositoryImplTest {
+
+    private PaymentRepositoryImpl repository;
+    private Payment payment;
+
+    private PatientTicket buildTicket() {
+        return new PatientTicket.Builder()
+                .setTicketId(201)
+                .setTicketDescription("Follow-up visit")
+                .setTicketCreatedDate(LocalDateTime.of(2026, 3, 25, 9, 0))
+                .build();
+    }
+
+    @BeforeEach
+    void setUp() {
+        repository = PaymentRepositoryImpl.getInstance();
+        payment = PaymentFactory.createPayment(
+                1, 750.00,
+                LocalDateTime.of(2026, 3, 25, 9, 30),
+                PaymentMethod.EFT,
+                PaymentStatus.PAID,
+                buildTicket()
+        );
+    }
+
+    @Test
+    void testCreate() {
+        Payment created = repository.create(payment);
+        assertNotNull(created);
+        assertEquals(payment.getPaymentId(), created.getPaymentId());
+        System.out.println("Create test passed: " + created);
+    }
+
+    @Test
+    void testRead() {
+        repository.create(payment);
+        Payment read = repository.read(1);
+        assertNotNull(read);
+        assertEquals(1, read.getPaymentId());
+        System.out.println("Read test passed: " + read);
+    }
+
+    @Test
+    void testUpdate() {
+        repository.create(payment);
+        Payment updated = PaymentFactory.createPayment(
+                1, 900.00,
+                LocalDateTime.now(),
+                PaymentMethod.MEDICAL_AID,
+                PaymentStatus.PENDING,
+                buildTicket()
+        );
+        Payment result = repository.update(updated);
+        assertNotNull(result);
+        assertEquals(900.00, result.getPaymentAmount());
+        assertEquals(PaymentMethod.MEDICAL_AID, result.getPaymentMethod());
+        System.out.println("Update test passed: " + result);
+    }
+
+    @Test
+    void testDelete() {
+        repository.create(payment);
+        boolean deleted = repository.delete(1);
+        assertTrue(deleted);
+        assertNull(repository.read(1));
+        System.out.println("Delete test passed");
+    }
+
+    @Test
+    void testDelete_NonExistent_ReturnsFalse() {
+        boolean deleted = repository.delete(999);
+        assertFalse(deleted);
+        System.out.println("Delete non-existent test passed");
+    }
+}

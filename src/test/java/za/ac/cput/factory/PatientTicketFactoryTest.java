@@ -14,6 +14,8 @@ import za.ac.cput.domain.PatientTicket;
 import za.ac.cput.domain.Appointment;
 
 
+import java.time.LocalDate;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 public class PatientTicketFactoryTest {
@@ -21,11 +23,21 @@ public class PatientTicketFactoryTest {
     private PatientTicket ticket;
 
     @BeforeEach
-    void setUp(){
-        Patient patient = new Patient();
+    void setUp() {
+        Patient patient = new Patient.Builder()
+                .setPatientId(1)
+                .setPatientName("John")
+                .setPatientSurname("Doe")
+                .setPatientCell("1234567890")
+                .setPatientEmail("john.doe@example.com")
+                .setPatientDOB(LocalDate.of(1990, 1, 1))
+                .build();
+
         Appointment appointment = new Appointment(); // Add this line
+
         ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", patient, appointment);
     }
+
 
     @Test
     void testCreateTicket(){
