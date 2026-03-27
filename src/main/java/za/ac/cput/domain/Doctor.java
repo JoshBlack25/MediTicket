@@ -1,5 +1,7 @@
 package za.ac.cput.domain;
 
+// Jaden Clayton Abrahams: 222206721
+
 public class Doctor {
     private int doctorId;
     private String doctorName;
