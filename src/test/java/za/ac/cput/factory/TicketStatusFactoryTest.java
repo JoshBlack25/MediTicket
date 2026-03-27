@@ -1,54 +1,47 @@
 /* TicketStatusFactoryTest.java
-   TDD test class for TicketStatusFactory
    Author: Joshua A (230317693)
    Date: 21 March 2026
 */
-
 package za.ac.cput.factory;
 
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-
-import za.ac.cput.domain.Appointment;
-import za.ac.cput.domain.Patient;
-import za.ac.cput.domain.PatientTicket;
-import za.ac.cput.domain.TicketStatus;
-import za.ac.cput.domain.enums.ConfirmationStatus;
-import za.ac.cput.domain.enums.StatusType;
+import org.junit.jupiter.api.*;
+import za.ac.cput.domain.*;
+import za.ac.cput.domain.enums.*;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class TicketStatusFactoryTest {
 
-    private TicketStatus openStatus;
-    private TicketStatus closedStatus;
-    private TicketStatus escalatedStatus;
+    private static PatientTicket ticket;
+    private static TicketStatus openStatus;
+    private static TicketStatus closedStatus;
+    private static TicketStatus escalatedStatus;
 
-    @BeforeEach
-    void setUp() {
+    @BeforeAll
+    static void setUp() {
         Patient patient = new Patient.Builder()
                 .setPatientId(1)
                 .setPatientName("John")
                 .setPatientSurname("Doe")
-                .setPatientCell("1234567890")
+                .setPatientCell("0821234567")
                 .setPatientEmail("john.doe@example.com")
                 .setPatientDOB(LocalDate.of(1990, 1, 1))
                 .build();
 
         Appointment appointment = new Appointment.Builder()
                 .setAppointmentId(1)
-                .setAppointmentDate(LocalDate.of(2026, 3, 27))
+                .setAppointmentDate(LocalDate.of(2026, 4, 10))
                 .setAppointmentTime(LocalTime.of(9, 0))
-                .setConfirmationStatus(ConfirmationStatus.PENDING) // adjust as needed
-                .setDoctor(null) // or provide a valid Doctor object
-                .setStaff(null) // or provide a valid ClinicStaff object
+                .setConfirmationStatus(ConfirmationStatus.CONFIRMED)
                 .build();
 
-        PatientTicket ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", patient, appointment);
+        ticket = PatientTicketFactory.createTicket(
+                1, "Patient requesting prescription refill",
+                patient, appointment);
 
         openStatus      = TicketStatusFactory.createStatus(1, StatusType.OPEN, ticket);
         closedStatus    = TicketStatusFactory.createStatus(2, StatusType.CLOSED, ticket);
@@ -56,34 +49,99 @@ public class TicketStatusFactoryTest {
     }
 
     @Test
-    void testCreateStatus(){
+    @Order(1)
+    void testCreateStatus_Success() {
         assertNotNull(openStatus);
     }
 
     @Test
-    void testStatusId(){
+    @Order(2)
+    void testStatusId() {
         assertEquals(1, openStatus.getStatusId());
     }
 
     @Test
-    void testStatusType(){
+    @Order(3)
+    void testStatusType() {
         assertEquals(StatusType.OPEN, openStatus.getStatusType());
     }
 
     @Test
-    void testStatusDateNotNull(){
+    @Order(4)
+    void testStatusDateNotNull() {
         assertNotNull(openStatus.getStatusDate());
     }
 
     @Test
-    void testIsClosed(){
+    @Order(5)
+    void testTicketNotNull() {
+        assertNotNull(openStatus.getTicket());
+    }
+
+    @Test
+    @Order(6)
+    void testIsClosed_True() {
         assertTrue(closedStatus.isClosed());
+    }
+
+    @Test
+    @Order(7)
+    void testIsClosed_False() {
         assertFalse(openStatus.isClosed());
     }
 
     @Test
-    void testIsEscalated(){
+    @Order(8)
+    void testIsEscalated_True() {
         assertTrue(escalatedStatus.isEscalated());
+    }
+
+    @Test
+    @Order(9)
+    void testIsEscalated_False() {
         assertFalse(openStatus.isEscalated());
+    }
+
+    @Test
+    @Order(10)
+    void testInvalidId_Fails() {
+        TicketStatus invalid = TicketStatusFactory.createStatus(
+                0, StatusType.OPEN, ticket);
+        assertNull(invalid);
+    }
+
+    @Test
+    @Order(11)
+    void testNullStatusType_Fails() {
+        TicketStatus invalid = TicketStatusFactory.createStatus(
+                4, null, ticket);
+        assertNull(invalid);
+    }
+
+    @Test
+    @Order(12)
+    void testNullTicket_Fails() {
+        TicketStatus invalid = TicketStatusFactory.createStatus(
+                4, StatusType.OPEN, null);
+        assertNull(invalid);
+    }
+
+    @Test
+    @Order(13)
+    void testCopyBuilder() {
+        TicketStatus copy = new TicketStatus.Builder()
+                .copy(openStatus)
+                .build();
+        assertNotNull(copy);
+        assertEquals(openStatus.getStatusId(), copy.getStatusId());
+        assertEquals(openStatus.getStatusType(), copy.getStatusType());
+    }
+
+    @Test
+    @Order(14)
+    void testToString() {
+        String result = openStatus.toString();
+        assertNotNull(result);
+        assertTrue(result.contains("OPEN"));
     }
 }

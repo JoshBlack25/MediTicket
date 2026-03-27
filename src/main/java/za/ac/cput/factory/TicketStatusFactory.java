@@ -1,23 +1,25 @@
 /* TicketStatusFactory.java
-   Factory class for creating TicketStatus objects
    Author: Joshua A (230317693)
    Date: 21 March 2026
 */
-
 package za.ac.cput.factory;
 
-import za.ac.cput.domain.*;
+import za.ac.cput.domain.PatientTicket;
+import za.ac.cput.domain.TicketStatus;
 import za.ac.cput.domain.enums.StatusType;
+import za.ac.cput.util.Helper;
 
 import java.time.LocalDateTime;
 
 public class TicketStatusFactory {
 
-    public static TicketStatus createStatus(int statusId, StatusType statusType, PatientTicket ticket){
+    public static TicketStatus createStatus(int statusId,
+                                            StatusType statusType,
+                                            PatientTicket ticket) {
 
-        if (statusId <= 0 || statusType == null || ticket == null) {
-            return null;
-        }
+        if (!Helper.isValidId(statusId)) return null;
+        if (statusType == null) return null;
+        if (ticket == null) return null;
 
         return new TicketStatus.Builder()
                 .setStatusId(statusId)
@@ -26,5 +28,4 @@ public class TicketStatusFactory {
                 .setTicket(ticket)
                 .build();
     }
-
 }

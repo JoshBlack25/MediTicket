@@ -106,6 +106,16 @@ public class Payment {
             return this;
         }
 
+        public Builder copy(Payment payment) {
+            this.paymentId = payment.paymentId;
+            this.paymentAmount = payment.paymentAmount;
+            this.paymentDate = payment.paymentDate;
+            this.paymentMethod = payment.paymentMethod;
+            this.paymentStatus = payment.paymentStatus;
+            this.ticket = payment.ticket;
+            return this;
+        }
+
         public Payment build() {
             return new Payment(this);
         }

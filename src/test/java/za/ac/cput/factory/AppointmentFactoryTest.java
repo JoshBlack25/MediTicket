@@ -1,9 +1,7 @@
 /* AppointmentFactoryTest.java
-Appointment Model Class
-Author: Joshua Peter Bonzet (221312536)
-Date: 26 March 2026
+   Author: Joshua Peter Bonzet (221312536)
+   Date: 26 March 2026
 */
-
 package za.ac.cput.factory;
 
 import org.junit.jupiter.api.*;
@@ -25,12 +23,20 @@ public class AppointmentFactoryTest {
     static void setUp() {
         doctor = new Doctor.Builder()
                 .setDoctorId(1)
-                .setDoctorName("Dr. John Smith")
+                .setDoctorName("John")
+                .setDoctorSurname("Smith")
+                .setDoctorSpecialty("Cardiologist")
+                .setDoctorCell("0821234567")
+                .setDoctorEmail("john.smith@clinic.com")
                 .build();
 
         staff = new ClinicStaff.Builder()
                 .setStaffId(1)
-                .setStaffName("Jane Doe")
+                .setStaffName("Jane")
+                .setStaffSurname("Doe")
+                .setStaffRole("Receptionist")
+                .setStaffEmail("jane.doe@clinic.com")
+                .setStaffCell("0831234567")
                 .build();
     }
 
@@ -154,6 +160,20 @@ public class AppointmentFactoryTest {
 
     @Test
     @Order(9)
+    void testCreateAppointment_PastDate_Fails() {
+        Appointment appointment = AppointmentFactory.createAppointment(
+                7,
+                LocalDate.of(2020, 1, 1),
+                LocalTime.of(9, 0),
+                ConfirmationStatus.CONFIRMED,
+                doctor,
+                staff
+        );
+        assertNull(appointment);
+    }
+
+    @Test
+    @Order(10)
     void testCreateAppointment_AllNull_Fails() {
         Appointment appointment = AppointmentFactory.createAppointment(
                 0,
@@ -164,5 +184,44 @@ public class AppointmentFactoryTest {
                 null
         );
         assertNull(appointment);
+    }
+
+    @Test
+    @Order(11)
+    void testCopyBuilder() {
+        Appointment original = AppointmentFactory.createAppointment(
+                8,
+                LocalDate.of(2026, 5, 10),
+                LocalTime.of(10, 0),
+                ConfirmationStatus.CONFIRMED,
+                doctor,
+                staff
+        );
+        assertNotNull(original);
+        Appointment copy = new Appointment.Builder()
+                .copy(original)
+                .build();
+        assertNotNull(copy);
+        assertEquals(original.getAppointmentId(), copy.getAppointmentId());
+        assertEquals(original.getAppointmentDate(), copy.getAppointmentDate());
+        assertEquals(original.getAppointmentTime(), copy.getAppointmentTime());
+        assertEquals(original.getConfirmationStatus(), copy.getConfirmationStatus());
+    }
+
+    @Test
+    @Order(12)
+    void testToString() {
+        Appointment appointment = AppointmentFactory.createAppointment(
+                9,
+                LocalDate.of(2026, 6, 10),
+                LocalTime.of(11, 0),
+                ConfirmationStatus.PENDING,
+                doctor,
+                staff
+        );
+        assertNotNull(appointment);
+        String result = appointment.toString();
+        assertNotNull(result);
+        assertTrue(result.contains("9"));
     }
 }

@@ -11,7 +11,7 @@ import java.util.Map;
 public class DoctorRepositoryImpl implements IDoctorRepository {
 
     private static DoctorRepositoryImpl instance;
-    private final Map<Integer, Doctor> doctorStore = new HashMap<>();
+    private final Map<Integer, Doctor> store = new HashMap<>();
 
     private DoctorRepositoryImpl() {}
 
@@ -25,35 +25,35 @@ public class DoctorRepositoryImpl implements IDoctorRepository {
     @Override
     public Doctor create(Doctor doctor) {
         if (doctor == null) return null;
-        if (doctorStore.containsKey(doctor.getDoctorId())) return null;
-        doctorStore.put(doctor.getDoctorId(), doctor);
+        if (store.containsKey(doctor.getDoctorId())) return null;
+        store.put(doctor.getDoctorId(), doctor);
         return doctor;
     }
 
     @Override
     public Doctor read(Integer id) {
         if (id == null || id <= 0) return null;
-        return doctorStore.get(id);
+        return store.get(id);
     }
 
     @Override
     public Doctor update(Doctor doctor) {
         if (doctor == null) return null;
-        if (!doctorStore.containsKey(doctor.getDoctorId())) return null;
-        doctorStore.put(doctor.getDoctorId(), doctor);
+        if (!store.containsKey(doctor.getDoctorId())) return null;
+        store.put(doctor.getDoctorId(), doctor);
         return doctor;
     }
 
     @Override
     public boolean delete(Integer id) {
         if (id == null || id <= 0) return false;
-        if (!doctorStore.containsKey(id)) return false;
-        doctorStore.remove(id);
+        if (!store.containsKey(id)) return false;
+        store.remove(id);
         return true;
     }
 
     @Override
     public List<Doctor> getAll() {
-        return new ArrayList<>(doctorStore.values());
+        return new ArrayList<>(store.values());
     }
 }

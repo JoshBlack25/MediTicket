@@ -1,72 +1,61 @@
-//230255639 - Aidan Barends
-//Date Completed 25 March
-
+// Aidan Barends 230255639
+// Date Completed 25 March
 package za.ac.cput.repository.impl;
 
 import za.ac.cput.domain.Patient;
 import za.ac.cput.repository.IPatientRepository;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class PatientRepositoryImpl implements IPatientRepository {
 
-    private static IPatientRepository repository = null;
-    private List<Patient>patientList;
+    private static PatientRepositoryImpl instance;
+    private final Map<Integer, Patient> store = new HashMap<>();
 
-    private PatientRepositoryImpl(){
-        patientList = new ArrayList<>();
-    }
+    private PatientRepositoryImpl() {}
 
-    public static IPatientRepository getRepository(){
-        if(repository == null){
-
-            repository = new PatientRepositoryImpl();
+    public static PatientRepositoryImpl getInstance() {
+        if (instance == null) {
+            instance = new PatientRepositoryImpl();
         }
-        return repository;
+        return instance;
     }
 
     @Override
     public Patient create(Patient patient) {
-        patientList.add(patient);
+        if (patient == null) return null;
+        if (store.containsKey(patient.getPatientId())) return null;
+        store.put(patient.getPatientId(), patient);
         return patient;
     }
 
     @Override
-    public Patient read(Integer patientId) {
-        for(Patient patient: patientList){
-            if(patient.getPatientId() == patientId){
-                return patient;
-            }
-        }
-        return null;
+    public Patient read(Integer id) {
+        if (id == null || id <= 0) return null;
+        return store.get(id);
     }
 
     @Override
     public Patient update(Patient patient) {
-        Patient oldPatient = read(patient.getPatientId());
-
-        if(oldPatient !=null){
-            patientList.remove(oldPatient);
-            patientList.add(patient);
-            return patient;
-        }
-        return null;
+        if (patient == null) return null;
+        if (!store.containsKey(patient.getPatientId())) return null;
+        store.put(patient.getPatientId(), patient);
+        return patient;
     }
 
     @Override
-    public boolean delete(Integer patientId) {
-        Patient patient = read(patientId);
-
-        if(patient !=null){
-            patientList.remove(patient);
-            return true;
-        }
-        return false;
+    public boolean delete(Integer id) {
+        if (id == null || id <= 0) return false;
+        if (!store.containsKey(id)) return false;
+        store.remove(id);
+        return true;
     }
 
     @Override
     public List<Patient> getAll() {
-        return patientList;
+        return new ArrayList<>(store.values());
     }
 }

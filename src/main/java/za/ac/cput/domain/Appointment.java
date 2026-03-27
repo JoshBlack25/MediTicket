@@ -78,6 +78,15 @@ public class Appointment {
             this.staff = staff;
             return this;
         }
+        public Builder copy(Appointment appointment) {
+            this.appointmentId = appointment.appointmentId;
+            this.appointmentDate = appointment.appointmentDate;
+            this.appointmentTime = appointment.appointmentTime;
+            this.confirmationStatus = appointment.confirmationStatus;
+            this.doctor = appointment.doctor;
+            this.staff = appointment.staff;
+            return this;
+        }
         public Appointment build() {
             return new Appointment(this);
         }

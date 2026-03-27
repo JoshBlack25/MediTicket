@@ -1,5 +1,4 @@
 /* PaymentRepositoryImpl.java
-   Implementation of the Payment repository using an in-memory store
    Author: Abdullahi (230971091)
    Date: 22 March 2026
 */
@@ -15,7 +14,6 @@ import java.util.Map;
 
 public class PaymentRepositoryImpl implements IPaymentRepository {
 
-    // Singleton instance
     private static PaymentRepositoryImpl instance;
     private final Map<Integer, Payment> store = new HashMap<>();
 
@@ -30,36 +28,36 @@ public class PaymentRepositoryImpl implements IPaymentRepository {
 
     @Override
     public Payment create(Payment payment) {
+        if (payment == null) return null;
+        if (store.containsKey(payment.getPaymentId())) return null;
         store.put(payment.getPaymentId(), payment);
         return payment;
     }
 
     @Override
     public Payment read(Integer id) {
+        if (id == null || id <= 0) return null;
         return store.get(id);
     }
 
     @Override
     public Payment update(Payment payment) {
-        if (store.containsKey(payment.getPaymentId())) {
-            store.put(payment.getPaymentId(), payment);
-            return payment;
-        }
-        return null;
+        if (payment == null) return null;
+        if (!store.containsKey(payment.getPaymentId())) return null;
+        store.put(payment.getPaymentId(), payment);
+        return payment;
     }
 
     @Override
     public boolean delete(Integer id) {
-        if (store.containsKey(id)) {
-            store.remove(id);
-            return true;
-        }
-        return false;
+        if (id == null || id <= 0) return false;
+        if (!store.containsKey(id)) return false;
+        store.remove(id);
+        return true;
     }
 
     @Override
     public List<Payment> getAll() {
         return new ArrayList<>(store.values());
     }
-
 }

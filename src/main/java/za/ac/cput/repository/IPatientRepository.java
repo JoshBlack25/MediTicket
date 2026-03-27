@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface IPatientRepository extends IRepository <Patient, Integer> {
 
-    List<Patient>getAll();
+
 }

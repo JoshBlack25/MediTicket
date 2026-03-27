@@ -87,6 +87,14 @@ public class TicketStatus {
             return this;
         }
 
+        public Builder copy(TicketStatus status) {
+            this.statusId = status.statusId;
+            this.statusType = status.statusType;
+            this.statusDate = status.statusDate;
+            this.ticket = status.ticket;
+            return this;
+        }
+
         public TicketStatus build(){
             return new TicketStatus(this);
         }

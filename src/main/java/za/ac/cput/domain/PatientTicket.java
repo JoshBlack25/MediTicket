@@ -118,6 +118,15 @@ public class PatientTicket {
             return this;
         }
 
+        public Builder copy(PatientTicket ticket) {
+            this.ticketId = ticket.ticketId;
+            this.ticketDescription = ticket.ticketDescription;
+            this.ticketCreatedDate = ticket.ticketCreatedDate;
+            this.patient = ticket.patient;
+            this.appointment = ticket.appointment;
+            return this;
+        }
+
         public PatientTicket build(){
             return new PatientTicket(this);
         }
