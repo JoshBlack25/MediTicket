@@ -86,6 +86,16 @@ public class ClinicStaff {
             return this;
         }
 
+        public Builder copy(ClinicStaff staff) {
+            this.staffId = staff.staffId;
+            this.staffName = staff.staffName;
+            this.staffSurname = staff.staffSurname;
+            this.staffRole = staff.staffRole;
+            this.staffEmail = staff.staffEmail;
+            this.staffCell = staff.staffCell;
+            return this;
+        }
+
         // Build method
         public ClinicStaff build() {
             return new ClinicStaff(this);

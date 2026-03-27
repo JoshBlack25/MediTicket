@@ -1,68 +1,63 @@
+/* AppointmentRepositoryImpl.java
+   Author: Joshua Peter Bonzet (221312536)
+   Date: 26 March 2026
+*/
 package za.ac.cput.repository.impl;
 
 import za.ac.cput.domain.Appointment;
 import za.ac.cput.repository.IAppointmentRepository;
 
-import java.util.HashSet;
-import java.util.Set;
-import java.util.List;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class AppointmentRepositoryImpl implements IAppointmentRepository {
 
-    private static AppointmentRepositoryImpl repository = null;
-    private final Set<Appointment> appointmentSet;
+    private static AppointmentRepositoryImpl instance;
+    private final Map<Integer, Appointment> store = new HashMap<>();
 
-    private AppointmentRepositoryImpl() {
-        this.appointmentSet = new HashSet<>();
-    }
+    private AppointmentRepositoryImpl() {}
 
-    public static AppointmentRepositoryImpl getRepository() {
-        if (repository == null) {
-            repository = new AppointmentRepositoryImpl();
+    public static AppointmentRepositoryImpl getInstance() {
+        if (instance == null) {
+            instance = new AppointmentRepositoryImpl();
         }
-        return repository;
+        return instance;
     }
 
     @Override
     public Appointment create(Appointment appointment) {
-        boolean added = this.appointmentSet.add(appointment);
-        return added ? appointment : null;
+        if (appointment == null) return null;
+        if (store.containsKey(appointment.getAppointmentId())) return null;
+        store.put(appointment.getAppointmentId(), appointment);
+        return appointment;
     }
 
     @Override
-    public Appointment read(Integer appointmentId) {
-        for (Appointment appointment : this.appointmentSet) {
-            if (appointment.getAppointmentId() == appointmentId.intValue()) {
-                return appointment;
-            }
-        }
-        return null;
+    public Appointment read(Integer id) {
+        if (id == null || id <= 0) return null;
+        return store.get(id);
     }
 
     @Override
     public Appointment update(Appointment appointment) {
-        Appointment existing = read(appointment.getAppointmentId());
-        if (existing != null) {
-            this.appointmentSet.remove(existing);
-            this.appointmentSet.add(appointment);
-            return appointment;
-        }
-        return null;
+        if (appointment == null) return null;
+        if (!store.containsKey(appointment.getAppointmentId())) return null;
+        store.put(appointment.getAppointmentId(), appointment);
+        return appointment;
     }
 
     @Override
-    public boolean delete(Integer appointmentId) {
-        Appointment existing = read(appointmentId);
-        if (existing != null) {
-            this.appointmentSet.remove(existing);
-            return true;
-        }
-        return false;
+    public boolean delete(Integer id) {
+        if (id == null || id <= 0) return false;
+        if (!store.containsKey(id)) return false;
+        store.remove(id);
+        return true;
     }
 
     @Override
     public List<Appointment> getAll() {
-        return new ArrayList<>(this.appointmentSet);
+        return new ArrayList<>(store.values());
     }
 }

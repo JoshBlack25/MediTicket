@@ -1,9 +1,7 @@
 /* PatientTicketRepositoryImpl.java
-   Implementation of IPatientTicketRepository using HashMap
    Author: Joshua A (230317693)
    Date: 22 March 2026
 */
-
 package za.ac.cput.repository.impl;
 
 import za.ac.cput.domain.PatientTicket;
@@ -30,27 +28,32 @@ public class PatientTicketRepositoryImpl implements IPatientTicketRepository {
 
     @Override
     public PatientTicket create(PatientTicket ticket) {
+        if (ticket == null) return null;
+        if (store.containsKey(ticket.getTicketId())) return null;
         store.put(ticket.getTicketId(), ticket);
         return ticket;
     }
 
     @Override
     public PatientTicket read(Integer id) {
+        if (id == null || id <= 0) return null;
         return store.get(id);
     }
 
     @Override
     public PatientTicket update(PatientTicket ticket) {
-        if (store.containsKey(ticket.getTicketId())) {
-            store.put(ticket.getTicketId(), ticket);
-            return ticket;
-        }
-        return null;
+        if (ticket == null) return null;
+        if (!store.containsKey(ticket.getTicketId())) return null;
+        store.put(ticket.getTicketId(), ticket);
+        return ticket;
     }
 
     @Override
     public boolean delete(Integer id) {
-        return store.remove(id) != null;
+        if (id == null || id <= 0) return false;
+        if (!store.containsKey(id)) return false;
+        store.remove(id);
+        return true;
     }
 
     @Override

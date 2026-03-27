@@ -122,6 +122,18 @@ public class NotificationService {
             return this;
         }
 
+        public Builder copy(NotificationService notification) {
+            this.notificationId = notification.notificationId;
+            this.notificationType = notification.notificationType;
+            this.notificationStatus = notification.notificationStatus;
+            this.notificationMessage = notification.notificationMessage;
+            this.patient = notification.patient;
+            this.ticket = notification.ticket;
+            this.appointment = notification.appointment;
+            this.notificationDate = notification.notificationDate;
+            return this;
+        }
+
         public NotificationService build(){
             return new NotificationService(this);
         }

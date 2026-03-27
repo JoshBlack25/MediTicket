@@ -1,15 +1,14 @@
 /* AppointmentFactory.java
-Appointment Model Class
-Author: Joshua Peter Bonzet (221312536)
-Date: 26 March 2026
+   Author: Joshua Peter Bonzet (221312536)
+   Date: 26 March 2026
 */
-
 package za.ac.cput.factory;
 
 import za.ac.cput.domain.Appointment;
 import za.ac.cput.domain.ClinicStaff;
-import za.ac.cput.domain.enums.ConfirmationStatus;
 import za.ac.cput.domain.Doctor;
+import za.ac.cput.domain.enums.ConfirmationStatus;
+import za.ac.cput.util.Helper;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -23,8 +22,9 @@ public class AppointmentFactory {
                                                 Doctor doctor,
                                                 ClinicStaff staff) {
 
-        if (appointmentId <= 0) return null;
+        if (!Helper.isValidId(appointmentId)) return null;
         if (appointmentDate == null || appointmentTime == null) return null;
+        if (appointmentDate.isBefore(LocalDate.now())) return null;
         if (confirmationStatus == null) return null;
         if (doctor == null || staff == null) return null;
 

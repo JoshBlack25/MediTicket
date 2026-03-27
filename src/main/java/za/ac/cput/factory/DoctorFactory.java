@@ -1,6 +1,7 @@
 package za.ac.cput.factory;
 
 import za.ac.cput.domain.Doctor;
+import za.ac.cput.util.Helper;
 
 public class DoctorFactory {
 
@@ -12,12 +13,13 @@ public class DoctorFactory {
             String doctorCell,
             String doctorEmail) {
 
-        if (doctorId <= 0) return null;
-        if (doctorName == null || doctorName.isEmpty()) return null;
-        if (doctorSurname == null || doctorSurname.isEmpty()) return null;
-        if (doctorSpecialty == null || doctorSpecialty.isEmpty()) return null;
-        if (doctorEmail == null || !doctorEmail.contains("@") || !doctorEmail.contains(".")) return null;
-        if (doctorCell == null || doctorCell.length() < 10 || !doctorCell.matches("\\d+")) return null;
+        if (!Helper.isValidId(doctorId)) return null;
+        if (Helper.isNullOrEmpty(doctorName)) return null;
+        if (Helper.isNullOrEmpty(doctorSurname)) return null;
+        if (Helper.isNullOrEmpty(doctorSpecialty)) return null;
+        if (!Helper.isValidEmail(doctorEmail)) return null;
+        if (Helper.isNullOrEmpty(doctorCell) || doctorCell.length() < 10
+                || !doctorCell.matches("\\d+")) return null;
 
         return new Doctor.Builder()
                 .setDoctorId(doctorId)
