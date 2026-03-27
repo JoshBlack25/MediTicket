@@ -13,9 +13,11 @@ import za.ac.cput.domain.Appointment;
 import za.ac.cput.domain.Patient;
 import za.ac.cput.domain.PatientTicket;
 import za.ac.cput.domain.TicketStatus;
+import za.ac.cput.domain.enums.ConfirmationStatus;
 import za.ac.cput.domain.enums.StatusType;
 
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -37,7 +39,14 @@ public class TicketStatusFactoryTest {
                 .setPatientDOB(LocalDate.of(1990, 1, 1))
                 .build();
 
-        Appointment appointment = new Appointment();
+        Appointment appointment = new Appointment.Builder()
+                .setAppointmentId(1)
+                .setAppointmentDate(LocalDate.of(2026, 3, 27))
+                .setAppointmentTime(LocalTime.of(9, 0))
+                .setConfirmationStatus(ConfirmationStatus.PENDING) // adjust as needed
+                .setDoctor(null) // or provide a valid Doctor object
+                .setStaff(null) // or provide a valid ClinicStaff object
+                .build();
 
         PatientTicket ticket = PatientTicketFactory.createTicket(1, "Patient requesting prescription refill", patient, appointment);
 
@@ -45,7 +54,6 @@ public class TicketStatusFactoryTest {
         closedStatus    = TicketStatusFactory.createStatus(2, StatusType.CLOSED, ticket);
         escalatedStatus = TicketStatusFactory.createStatus(3, StatusType.ESCALATED, ticket);
     }
-
 
     @Test
     void testCreateStatus(){
